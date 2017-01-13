@@ -1,0 +1,68 @@
+---
+
+- hosts: localhost
+  connection: local
+  vars:
+    homebrew_taps:
+      - caskroom/cask
+
+    homebrew_cask_packages:
+      - appcleaner
+      - atom
+      - cheatsheet
+      - cyberduck
+      - docker
+      - dropbox
+      - evernote
+      - franz
+      - google-chrome
+      - google-drive
+      - google-japanese-ime
+      - hosts
+      - iterm2
+      - sequel-pro
+      - slack
+      - sketch
+      - sketch-toolbox
+      - sourcetree
+      - vagrant
+      - virtualbox
+
+    homebrew_packages:
+      - wget
+      - mas
+
+    mas_packages:
+      - 539883307  # LINE
+
+  tasks:
+    - name: add homebrew taps
+      homebrew_tap:
+        tap: "{{ item }}"
+        state: present
+      with_items: "{{ homebrew_taps }}"
+      tags:
+        - homebrew
+
+    - name: install homebrew cask packages
+      homebrew_cask:
+        name: "{{ item }}"
+        state: present
+        install_options: 'appdir=/Applications'
+      with_items: "{{ homebrew_cask_packages }}"
+      tags:
+        - homebrew
+
+    - name: install homebrew packages
+      homebrew:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{ homebrew_packages }}"
+      tags:
+        - homebrew
+
+    - name: install app store applications
+      command: mas install "{{ item }}"
+      with_items: "{{ mas_packages }}"
+      tags:
+        - homebrew
