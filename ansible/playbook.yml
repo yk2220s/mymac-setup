@@ -29,8 +29,10 @@
       - virtualbox
 
     homebrew_packages:
-      - wget
       - mas
+      - pyenv
+      - tree
+      - wget
 
     mas_packages:
       - 539883307  # LINE
